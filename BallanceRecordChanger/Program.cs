@@ -12,8 +12,8 @@ namespace BallanceRecordChanger {
             Console.WriteLine("Please put your Database.tdb in this app's folder. Then press any key to read it.");
             Console.ReadKey();
 
-            var data = DBReader.ReadDB(Environment.CurrentDirectory + "\\Database.tdb");
-            using (StreamWriter fs = new StreamWriter(Environment.CurrentDirectory + "\\DecodeData.json", false, Encoding.UTF8)) {
+            var data = Databasetdb.DatabasetdbWrapper.ReadDatabase("Database.tdb");
+            using (StreamWriter fs = new StreamWriter("DecodeData.json", false, Encoding.UTF8)) {
                 fs.Write(Newtonsoft.Json.JsonConvert.SerializeObject(data));
                 fs.Close();
             }
@@ -22,18 +22,18 @@ namespace BallanceRecordChanger {
             Console.ReadKey();
 
             string oriData;
-            using (StreamReader fs = new StreamReader(Environment.CurrentDirectory + "\\DecodeData.json", Encoding.UTF8)) {
+            using (StreamReader fs = new StreamReader("DecodeData.json", Encoding.UTF8)) {
                 oriData = fs.ReadToEnd();
                 fs.Close();
             }
 
-            var dataR = Newtonsoft.Json.JsonConvert.DeserializeObject<Database>(oriData);
+            var dataR = Newtonsoft.Json.JsonConvert.DeserializeObject<Databasetdb.BallanceDatabase>(oriData);
 
-            DBReader.SaveDB(dataR, Environment.CurrentDirectory + "\\Database.new.tdb");
+            Databasetdb.DatabasetdbWrapper.SaveDatabase("Database.new.tdb", dataR);
 
             Console.WriteLine("New Database.tdb file has been written into Database.new.tdb. Press any key to quit app.");
             Console.ReadKey();
-            
+
         }
     }
 }
